@@ -1,0 +1,13 @@
+*.cache
+*.m4
+compile
+config.h*
+*.log
+config.status
+depcomp
+missing
+stamp-h1
+install-sh
+ar-lib
+*.deps
+*.o

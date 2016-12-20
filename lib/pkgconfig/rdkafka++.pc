@@ -1,0 +1,10 @@
+prefix=/home/ll/code/teno
+libdir=/home/ll/code/teno/lib
+includedir=/home/ll/code/teno/include
+
+Name: librdkafka++
+Description: The Apache Kafka C/C++ library
+Version: 0.9.3
+Cflags: -I${includedir}
+Libs: -L${libdir} -lrdkafka++
+Libs.private: -lrdkafka -lpthread -lz -lz -lcrypto -lcrypto -lssl -lcrypto -lssl -lsasl2 -lrt -lstdc++
