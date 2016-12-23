@@ -140,12 +140,11 @@ produce_message(){
 
 	/* Create topic */
 	rkt = rd_kafka_topic_new(rk, topic, topic_conf);
-	topic_conf = NULL;
 
 	while(run && fgets(buf, sizeof(buf), stdin)){
 		size_t len = strlen(buf);
 		if(buf[len-1] == '\n')
-			buf[len-1] = '\0';
+			buf[--len] = '\0';
 
 		/* Send/Producer message */
 		if(rd_kafka_produce(rkt, partition,
@@ -162,7 +161,10 @@ produce_message(){
 				rd_kafka_poll(rk, 0);
 				continue;
 		}
-
+		if (!quiet)
+			fprintf(stderr, "%% Sent %zd bytes to topic "
+				"%s partition %i\n",
+			len, rd_kafka_topic_name(rkt), partition);
 		sendcnt++;
 		/* Poll to handle delivery reports */
 		rd_kafka_poll(rk, 0);

@@ -95,7 +95,9 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 libcommon_a_AR = $(AR) $(ARFLAGS)
 libcommon_a_LIBADD =
-am_libcommon_a_OBJECTS = libcommon_a-producer.$(OBJEXT)
+am_libcommon_a_OBJECTS = libcommon_a-producer.$(OBJEXT) \
+	libcommon_a-job.$(OBJEXT) libcommon_a-log.$(OBJEXT) \
+	libcommon_a-cJSON.$(OBJEXT)
 libcommon_a_OBJECTS = $(am_libcommon_a_OBJECTS)
 AM_V_P = $(am__v_P_$(V))
 am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))
@@ -247,8 +249,12 @@ top_build_prefix = ../../
 top_builddir = ../..
 top_srcdir = ../..
 AUTOMAKE_OPTIONS = foreign 
-noinst_LIBRARIES = libcommon.a
-libcommon_a_SOURCES = producer.c producer.h  
+noinst_LIBRARIES = libcommon.a 
+libcommon_a_SOURCES = producer.c producer.h  		\
+		job.h job.c 				\
+		log.h log.c  				\
+		cJSON.h cJSON.c
+
 libcommon_a_CFLAGS = -I../../include/librdkafka
 all: all-am
 
@@ -299,6 +305,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+include ./$(DEPDIR)/libcommon_a-cJSON.Po
+include ./$(DEPDIR)/libcommon_a-job.Po
+include ./$(DEPDIR)/libcommon_a-log.Po
 include ./$(DEPDIR)/libcommon_a-producer.Po
 
 .c.o:
@@ -328,6 +337,48 @@ libcommon_a-producer.obj: producer.c
 #	$(AM_V_CC)source='producer.c' object='libcommon_a-producer.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
 #	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-producer.obj `if test -f 'producer.c'; then $(CYGPATH_W) 'producer.c'; else $(CYGPATH_W) '$(srcdir)/producer.c'; fi`
+
+libcommon_a-job.o: job.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -MT libcommon_a-job.o -MD -MP -MF $(DEPDIR)/libcommon_a-job.Tpo -c -o libcommon_a-job.o `test -f 'job.c' || echo '$(srcdir)/'`job.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-job.Tpo $(DEPDIR)/libcommon_a-job.Po
+#	$(AM_V_CC)source='job.c' object='libcommon_a-job.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-job.o `test -f 'job.c' || echo '$(srcdir)/'`job.c
+
+libcommon_a-job.obj: job.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -MT libcommon_a-job.obj -MD -MP -MF $(DEPDIR)/libcommon_a-job.Tpo -c -o libcommon_a-job.obj `if test -f 'job.c'; then $(CYGPATH_W) 'job.c'; else $(CYGPATH_W) '$(srcdir)/job.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-job.Tpo $(DEPDIR)/libcommon_a-job.Po
+#	$(AM_V_CC)source='job.c' object='libcommon_a-job.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-job.obj `if test -f 'job.c'; then $(CYGPATH_W) 'job.c'; else $(CYGPATH_W) '$(srcdir)/job.c'; fi`
+
+libcommon_a-log.o: log.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -MT libcommon_a-log.o -MD -MP -MF $(DEPDIR)/libcommon_a-log.Tpo -c -o libcommon_a-log.o `test -f 'log.c' || echo '$(srcdir)/'`log.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-log.Tpo $(DEPDIR)/libcommon_a-log.Po
+#	$(AM_V_CC)source='log.c' object='libcommon_a-log.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-log.o `test -f 'log.c' || echo '$(srcdir)/'`log.c
+
+libcommon_a-log.obj: log.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -MT libcommon_a-log.obj -MD -MP -MF $(DEPDIR)/libcommon_a-log.Tpo -c -o libcommon_a-log.obj `if test -f 'log.c'; then $(CYGPATH_W) 'log.c'; else $(CYGPATH_W) '$(srcdir)/log.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-log.Tpo $(DEPDIR)/libcommon_a-log.Po
+#	$(AM_V_CC)source='log.c' object='libcommon_a-log.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-log.obj `if test -f 'log.c'; then $(CYGPATH_W) 'log.c'; else $(CYGPATH_W) '$(srcdir)/log.c'; fi`
+
+libcommon_a-cJSON.o: cJSON.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -MT libcommon_a-cJSON.o -MD -MP -MF $(DEPDIR)/libcommon_a-cJSON.Tpo -c -o libcommon_a-cJSON.o `test -f 'cJSON.c' || echo '$(srcdir)/'`cJSON.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-cJSON.Tpo $(DEPDIR)/libcommon_a-cJSON.Po
+#	$(AM_V_CC)source='cJSON.c' object='libcommon_a-cJSON.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-cJSON.o `test -f 'cJSON.c' || echo '$(srcdir)/'`cJSON.c
+
+libcommon_a-cJSON.obj: cJSON.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -MT libcommon_a-cJSON.obj -MD -MP -MF $(DEPDIR)/libcommon_a-cJSON.Tpo -c -o libcommon_a-cJSON.obj `if test -f 'cJSON.c'; then $(CYGPATH_W) 'cJSON.c'; else $(CYGPATH_W) '$(srcdir)/cJSON.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-cJSON.Tpo $(DEPDIR)/libcommon_a-cJSON.Po
+#	$(AM_V_CC)source='cJSON.c' object='libcommon_a-cJSON.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-cJSON.obj `if test -f 'cJSON.c'; then $(CYGPATH_W) 'cJSON.c'; else $(CYGPATH_W) '$(srcdir)/cJSON.c'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique

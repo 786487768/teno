@@ -1,0 +1,1 @@
+#define TENO_ERROR -1

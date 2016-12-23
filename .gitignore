@@ -11,3 +11,4 @@ install-sh
 ar-lib
 *.deps
 *.o
+*.a
