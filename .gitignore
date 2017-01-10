@@ -12,3 +12,5 @@ ar-lib
 *.deps
 *.o
 *.a
+*.pyc
+test*

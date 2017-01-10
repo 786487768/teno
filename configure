@@ -4759,7 +4759,7 @@ fi
 done
 
 
-ac_config_files="$ac_config_files Makefile src/common/Makefile src/submit/Makefile"
+ac_config_files="$ac_config_files Makefile src/common/Makefile src/submit/Makefile src/tenoc/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -5491,6 +5491,7 @@ do
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "src/common/Makefile") CONFIG_FILES="$CONFIG_FILES src/common/Makefile" ;;
     "src/submit/Makefile") CONFIG_FILES="$CONFIG_FILES src/submit/Makefile" ;;
+    "src/tenoc/Makefile") CONFIG_FILES="$CONFIG_FILES src/tenoc/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac

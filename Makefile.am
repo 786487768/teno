@@ -1,1 +1,1 @@
-SUBDIRS=src/common src/submit
+SUBDIRS=src/common src/submit src/tenoc

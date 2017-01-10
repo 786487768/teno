@@ -84,7 +84,7 @@ sig_usr1(int sig){
 }
 
 extern void 
-produce_message(){
+produce_message(char *buf){
 	rd_kafka_topic_t *rkt;
 	rd_kafka_conf_t *conf;
 	rd_kafka_topic_conf_t *topic_conf;
@@ -116,7 +116,6 @@ produce_message(){
 	signal(SIGINT, stop);
 	signal(SIGUSR1, sig_usr1);
 
-	char buf[2048];
 	int sendcnt = 0;
 
 	/* Set up a message delivery report callback */
@@ -141,7 +140,7 @@ produce_message(){
 	/* Create topic */
 	rkt = rd_kafka_topic_new(rk, topic, topic_conf);
 
-	while(run && fgets(buf, sizeof(buf), stdin)){
+	if(run){
 		size_t len = strlen(buf);
 		if(buf[len-1] == '\n')
 			buf[--len] = '\0';
@@ -159,7 +158,6 @@ produce_message(){
 					rd_kafka_err2str(rd_kafka_last_error()));
 				/* Poll to handle delivery reports */
 				rd_kafka_poll(rk, 0);
-				continue;
 		}
 		if (!quiet)
 			fprintf(stderr, "%% Sent %zd bytes to topic "

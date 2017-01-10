@@ -4,7 +4,7 @@
 AC_PREREQ([2.69])
 AC_INIT([FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS])
 AM_INIT_AUTOMAKE([foreign -Wall -Werror])
-AC_CONFIG_SRCDIR([src/submit/submit.c])
+AC_CONFIG_SRCDIR([src/submit/submit.c], [src/tenoc/tenoc.c])
 AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
@@ -26,5 +26,5 @@ AC_TYPE_SSIZE_T
 # Checks for library functions.
 AC_CHECK_FUNCS([gettimeofday])
 
-AC_CONFIG_FILES([Makefile src/common/Makefile src/submit/Makefile])
+AC_CONFIG_FILES([Makefile src/common/Makefile src/submit/Makefile src/tenoc/Makefile])
 AC_OUTPUT

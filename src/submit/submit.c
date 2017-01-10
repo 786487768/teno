@@ -11,9 +11,10 @@
 #include "src/common/cJSON.h"
 #include "src/common/producer.h"
 
+static char *EXEC = "srun";
 static void _usage(char *process_name);
 
-int main(int argc, char **argv){
+int main(int argc, const char **argv){
 
     job_t *job;
     int opt, i;
@@ -22,18 +23,15 @@ int main(int argc, char **argv){
     char *output_file = NULL;
     char *error_file = NULL;
     char *conf_file = NULL;
-    
     cJSON *message = cJSON_CreateObject();
-
+    cJSON *argv_array = cJSON_CreateStringArray(argv + 1, argc - 1);
+    cJSON *arg;
     job_init(&job);
 
     if(job == NULL)
         printf("error\n");
-    while((opt = getopt(argc, argv, "a:c:e:i:o:w:h")) != -1){
+/*    while((opt = getopt(argc, argv, "a:c:e:i:o:w:h")) != -1){
         switch(opt){
-            case 'a':
-                job->job_argv = optarg;
-                break;
             case 'c':
                 if((job->cfile = fopen(optarg, "r")) == NULL)
                     error("configure file open fail");
@@ -54,28 +52,28 @@ int main(int argc, char **argv){
                 job->workdir = optarg;
                 break;
             case 'h':
-            default:
                 _usage(argv[0]);
                 exit(1);
+            default:
+                printf("%s\n", optarg);
         }
     }
 
     if(argc <= 1 || optind >= argc){
         _usage(argv[0]);
         exit(1);
-    }
+    }*/
     job->uid = getuid();
-    job->job_cmd = *(argv + optind);
-    cJSON_AddStringToObject(message, "cmd", job->job_cmd);
-    if(job->job_argv == NULL)
-        cJSON_AddStringToObject(message, "argv", "");
-    else
-        cJSON_AddStringToObject(message, "argv", job->job_argv);
+    job->job_exec = EXEC;
+    cJSON_AddStringToObject(message, "exec", job->job_exec);
+    cJSON_AddItemToObject(message, "argv", argv_array);
     cJSON_AddNumberToObject(message, "uid", job->uid);
     char *out = cJSON_Print(message);
     printf("%s\n", out);
 
-
+    produce_message(out);
+    cJSON_Delete(message);
+    free(out);
     return 0;
 }
 

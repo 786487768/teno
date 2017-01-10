@@ -17,4 +17,4 @@
  #include "rdkafka.h"   /* for Kafka driver */
 
  /* produce messages to kafka*/
- extern void produce_message();
+ extern void produce_message(char *buf);

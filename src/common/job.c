@@ -11,7 +11,7 @@ job_init(job_t **job)
     if((*job = (job_t *)malloc(sizeof(job_t))) == NULL)
         printf("job init fail\n");
     (*job)->job_id = -1;
-    (*job)->job_cmd = NULL;
+    (*job)->job_exec = NULL;
     (*job)->job_argv = NULL;
     (*job)->workdir = NULL;
     (*job)->uid = 0;

@@ -1,0 +1,5 @@
+run dispatch_jos.py
+6379
+test ../utils/static_keys.py >/home/ll/code/teno/src/htcteno/interact/output/static_keys.py
+test ../utils/__init__.py >/home/ll/code/teno/src/htcteno/interact/output/__init__.py
+test ../utils/parse_configure.py >/home/ll/code/teno/src/htcteno/interact/output/parse_configure.py

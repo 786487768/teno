@@ -13,7 +13,7 @@ typedef enum{
 
 typedef struct{
 	uint32_t job_id;
-	char *job_cmd;
+	char *job_exec;
 	char *job_argv;
 	char *workdir;
 	int uid;

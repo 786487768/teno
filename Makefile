@@ -279,7 +279,7 @@ target_alias =
 top_build_prefix = 
 top_builddir = .
 top_srcdir = .
-SUBDIRS = src/common src/submit
+SUBDIRS = src/common src/submit src/tenoc
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
