@@ -10,11 +10,13 @@ sys.path.append('..')
 sys.path.append('../..')
 
 from slurm.slurm import Slurm
-from utils.static_keys import StaticKeys
-from utils.parse_configure import parse_configure_file
+from utils.static_keys import StaticKeys, TASK_TYPE, TASK_STATE
+from utils.parse_configure import parse_all_configure
+from torm.handle_tasks import insert_task, update_slurm_id, update_task_state
 
 def _usage():
     print ('''usage:      htcrun [exec] <exec argvs>
+            -C      configure file
             -I      input dir
             -O      output dir
             -h      help''')
@@ -65,26 +67,46 @@ if __name__ == '__main__':
             os.mkdir(output_dir)
 
     # get configure info
-    configure_info = parse_configure_file()
+    configure_info = parse_all_configure()
     redis_host = configure_info.get(StaticKeys.REDIS_HOST)
     redis_port = configure_info.get(StaticKeys.REDIS_PORT)
     redis_path = configure_info.get(StaticKeys.REDIS_PATH)
     celery_path = configure_info.get(StaticKeys.CELERY_PATH)
+    # create a new task record 
+    user = os.getuid()
+    input_files = [i for i in os.listdir(input_dir) if os.path.isfile(join(input_dir, i))]
+    total_jobs = len(input_files)
+    command = ' '.join(exec_program)
+    command_all = "%s -I %s -O %s" %(command, input_dir, output_dir)
+    task_id = insert_task(user, TASK_TYPE.HTC_TASK, TASK_STATE.SUBMITED, \
+            redis_host, redis_port, total_jobs, command_all)
+    if task_id == None:
+        print ("task submit fail")
+        exit(3)
 
     setting = {}
-    setting['exec'] = ' '.join(exec_program)
+    setting['task_id'] = task_id
+    setting['exec'] = command
     setting['input'] = input_dir
     setting['output'] = output_dir
     settings = json.dumps(setting).encode('utf-8')
-    print (type(settings))
-    slurm_argvs = ['bash', 'run.sh', redis_path, redis_host, redis_port, celery_path, settings]
-
+    slurm_argvs = ['sbatch', 'run.sh', redis_path, redis_host, \
+            redis_port, celery_path, settings]
     try:
         p = Popen(slurm_argvs, stdout=PIPE, stderr=PIPE)
         (output, error) = p.communicate()
         print (output, error)
     except Exception:
         print ("sbatch failed")
+        update_task_state(task_id, TASK_STATE.SUBMIT_ERROR)
+
+    if error:
+        print (error)
+        update_task_state(task_id, TASK_STATE.SUBMIT_ERROR) 
+    else:
+        slurm_id = output.decode('UTF-8').strip().split(' ')[-1]
+        update_task_state(task_id, TASK_STATE.WAITTINT) 
+        update_slurm_id(task_id, slurm_id)
 
 
 

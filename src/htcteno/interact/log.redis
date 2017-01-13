@@ -1,3 +1,0 @@
-[33291] 09 Jan 18:57:23.474 # Warning: no config file specified, using the default config. In order to specify a config file use /usr/bin/redis-server /path/to/redis.conf
-[33291] 09 Jan 18:57:23.475 # Unable to set the max number of files limit to 10032 (Operation not permitted), setting the max clients configuration to 3984.
-[33291] 09 Jan 18:57:23.475 # Creating Server TCP listening socket *:6379: bind: Address already in use

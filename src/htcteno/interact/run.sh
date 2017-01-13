@@ -10,19 +10,19 @@ REDIS_HOST=$2
 REDIS_PORT=$3
 CELERY_PATH=$4
 SETTINTS=$5
-echo ${SETTINTS}
 export HTCTENO_HOST=${REDIS_HOST}
 export HTCTENO_PORT=${REDIS_PORT}
 # run redis-server
 nohup ${REDIS_PATH} &> log.redis &
 
 # set settings to redis
-set_configure.py ${REDIS_HOST} ${REDIS_PORT} ${SETTINTS}&> log.setting &
+set_configure.py ${REDIS_HOST} ${REDIS_PORT} ${SETTINTS} &> log.setting &
 # run worker
-srun -N $[ SLURM_NNODES  ] -n $[ SLURM_NNODES  ] -c 1  ${CELERY_PATH} -A htc_celery worker -l info &> log.worker &
-# dispense jobs
+srun ${CELERY_PATH} -A htc_celery worker -l info &> log.worker &
+# dispatch jobs
 dispatch_jobs.py ${REDIS_HOST} ${REDIS_PORT} &> log.run &
+# monitor the status of the task and clean server when task is finished
+monitor.py ${REDIS_HOST} ${REDIS_PORT}
+echo "task has been finished"
+sleep 10
 
-
-# kill server
-killall -9 celery &> /dev/null

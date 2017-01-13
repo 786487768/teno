@@ -1,4 +1,0 @@
-[2017-01-09 18:57:23,799: INFO/MainProcess] Connected to redis://localhost:6379//
-[2017-01-09 18:57:23,806: INFO/MainProcess] mingle: searching for neighbors
-[2017-01-09 18:57:24,822: INFO/MainProcess] mingle: all alone
-[2017-01-09 18:57:24,832: INFO/MainProcess] celery@ubuntu ready.

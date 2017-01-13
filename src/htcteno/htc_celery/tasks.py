@@ -26,7 +26,7 @@ def xsum(numbers):
     return sum(numbers)
 
 
-@app.task(base=HtcTask, bind = True , autoretry_for=(Exception,) , track_started = True , max_retries = 3 , default_retry_delay = 1 )
+@app.task(base=HtcTask, bind = True , autoretry_for=(Exception,) , track_started = True , max_retries = 3 , default_retry_delay = 1)
 def run_command( self , command, env=None, timeout=600  ):
     # env_backup = os.environ.copy()
     # if settings["job"]["env"] == "bash" : 
@@ -39,7 +39,7 @@ def run_command( self , command, env=None, timeout=600  ):
     #     os.putenv("PATH" , env_path)
     #     os.putenv("LD_LIBRARY_PATH" , env_ld)
     #     
-    args = [ "bash" , "-c"  , command ]
+    args = [ "bash" , "-c"  , "-l", command ]
     try:
         p = Popen(args, stdout=PIPE, stderr=PIPE)
     except OSError as  ex:
