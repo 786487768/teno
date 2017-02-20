@@ -1,7 +1,7 @@
 /*
- * producer - x system common tools
+ * Tenoc - Teno System Dispatcher.
  *
- * Connect with kafka and produce command messages to kafka
+ * Connect with kafka and consume command messages to LRM.
  */
 
  #include "src/tenoc/tenoc.h"
@@ -41,13 +41,16 @@
 
 static void msg_consume (rd_kafka_message_t *rkmessage,
              void *opaque) {
-    cJSON *message;
-    char *exec;
-    char *argv;
-    uint32_t uid;
-    char result[256];
-    char errinfo[256];
+    cJSON *message;         // task info. get from kafka and transfor json
+    int task_id;            // task id. get from message
+    int is_success;        // task exec is or not success
+    char *exec;             // task exec command
+    char *argv;             // task exec argv
+    char *exec_result;      // task exec result when it success
+    char *error;            // task exec error when it fail
+    uint32_t uid;           // userid
     PyObject *call_slurm;
+    MYSQL mysql;
     if (rkmessage->err) {
         if (rkmessage->err == RD_KAFKA_RESP_ERR__PARTITION_EOF) {
             fprintf(stderr,
@@ -113,22 +116,36 @@ static void msg_consume (rd_kafka_message_t *rkmessage,
                (int)rkmessage->len, (char *)rkmessage->payload);
 */
     message = cJSON_Parse((char *)rkmessage->payload);
+    task_id = cJSON_GetObjectItem(message, "task_id")->valueint;
     exec = cJSON_GetObjectItem(message, "exec")->valuestring;
     argv = cJSON_Print(cJSON_GetObjectItem(message, "argv"));
     uid = cJSON_GetObjectItem(message, "uid")->valueint;
-    printf("exec = %s, argv = %s, uid = %u\n", exec, argv, uid);
 
-    printf("begin stdout is %ld\n", ftell(stdout));
     if(setuid(uid) < 0)
         fprintf(stderr, "set uid failed\n");
 
+    // update task state
+    if(connector_init(&mysql, "ll", "816543", "tasks_info"))
+        exit(10);
+    update_state(&mysql, task_id, TASK_RUNNING);
+    
     Py_Initialize();
     PyRun_SimpleString("import sys; sys.path.append('..')");
     call_slurm = import_name("slurm.slurm", "run");
-    printf("%s\n", get_task_result(call_slurm, exec, argv));
+    is_success = get_task_result(call_slurm, exec, argv, &exec_result, &error);
+
+    if(is_success == 0){
+        printf("result = %s\n", exec_result);
+        update_state(&mysql, task_id, TASK_SUCCESS);
+    }
+    else{
+        printf("error = %s\n", error);
+        update_state(&mysql, task_id, TASK_FAIL);
+    }
+    connector_terminate(&mysql);
     Py_DECREF(call_slurm);
     Py_Finalize();
-
+    cJSON_Delete(message);
 }
 
 static void 

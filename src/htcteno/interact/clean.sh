@@ -1,1 +1,1 @@
-rm log.* slurm-*
+rm log.* slurm-* dump.rdb

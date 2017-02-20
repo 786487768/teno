@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "src/common/tpython.h"
 
 extern PyObject *
@@ -61,12 +60,14 @@ fail:
 
 }
 
-extern char *
-get_task_result(PyObject *func, const char *exec, const char *argv){
+extern int
+get_task_result(PyObject *func, const char *exec, const char *argv, 
+                    char **exec_result, char **error){
     PyObject *args;
     PyObject *kwargs;
     PyObject *result = 0;
     char *retval;
+    int return_code = -1;
 
     /* Make sure own thr GIL */
     PyGILState_STATE state = PyGILState_Ensure();
@@ -91,19 +92,13 @@ get_task_result(PyObject *func, const char *exec, const char *argv){
         goto fail;
     }
 
-    /* Vertify the result is a Unicode object */
-    if(!PyBytes_Check(result)){
-        fprintf(stderr, "call_func: callable didn't return a normal result\n");
-        goto fail;
-    }
-
-    /* Create the return value */
-    retval = PyBytes_AsString(result);
-    Py_DECREF(result);
-
+    /* parse result to get return code and exec result or error */
+    if(result && PyArg_ParseTuple(result, "iss", &return_code, exec_result, error))
+        printf("task submits to slurm\n");
     /* Restore previous GIL state and return */
+    Py_DECREF(result);
     PyGILState_Release(state);
-    return retval;
+    return return_code;
 
 fail:
     Py_DECREF(result);

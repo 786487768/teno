@@ -83,9 +83,11 @@ class Slurm(object):
 def run(task_exec, slurm_argc):
     slurm_task = Slurm(task_exec, slurm_argc)
     (result, error) = slurm_task.run_task()
-    return result if result else error
+    return_code = 0 if result else 1
+    return (return_code, result.decode('UTF-8'), error.decode('UTF-8'))
 
 if __name__ == '__main__':
-    slurm_task = Slurm('srun', 'hostname')
+    slurm_task = Slurm('srun', ['hostname'])
     result, error = slurm_task.run_task()
-    print (result if result else error)
+    return_code = 0 if result else 1
+    print (return_code, result.decode('UTF-8'), error.decode('UTF-8'))

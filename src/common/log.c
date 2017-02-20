@@ -21,84 +21,84 @@ static void log_msg(log_level_t level, const char *fmt, va_list args);
 extern void 
 fatal(const char *fmt, ...)
 {
-	va_list ap;
+    va_list ap;
 
-	va_start(ap, fmt);
-	log_msg(LOG_LEVEL_FATAL, fmt, ap);
-	va_end(ap);
+    va_start(ap, fmt);
+    log_msg(LOG_LEVEL_FATAL, fmt, ap);
+    va_end(ap);
 
-	exit(1);
+    exit(1);
 }
 
 extern int 
 error(const char *fmt, ...)
 {
-	va_list ap;
+    va_list ap;
 
-	va_start(ap, fmt);
-	log_msg(LOG_LEVEL_ERROR, fmt, ap);
-	va_end(ap);
+    va_start(ap, fmt);
+    log_msg(LOG_LEVEL_ERROR, fmt, ap);
+    va_end(ap);
 
-	return TENO_ERROR;
+    return TENO_ERROR;
 }
 
 extern void 
 info(const char *fmt, ...)
 {
-	va_list ap;
+    va_list ap;
 
-	va_start(ap, fmt);
-	log_msg(LOG_LEVEL_INFO, fmt, ap);
-	va_end(ap);
+    va_start(ap, fmt);
+    log_msg(LOG_LEVEL_INFO, fmt, ap);
+    va_end(ap);
 }
 
 void debug(const char *fmt, ...)
 {
-	va_list ap;
+    va_list ap;
 
-	va_start(ap, fmt);
-	log_msg(LOG_LEVEL_DEBUG, fmt, ap);
-	va_end(ap);
+    va_start(ap, fmt);
+    log_msg(LOG_LEVEL_DEBUG, fmt, ap);
+    va_end(ap);
 }
 
 void debug2(const char *fmt, ...)
 {
-	va_list ap;
+    va_list ap;
 
-	va_start(ap, fmt);
-	log_msg(LOG_LEVEL_DEBUG2, fmt, ap);
-	va_end(ap);
+    va_start(ap, fmt);
+    log_msg(LOG_LEVEL_DEBUG2, fmt, ap);
+    va_end(ap);
 }
 
 static void
 log_msg(log_level_t level, const char *fmt, va_list args)
 {
-	char *pfx = "";
-	char *buf = NULL;
+    char *pfx = "";
+    char *buf = NULL;
 
-	switch(level){
-		case LOG_LEVEL_FATAL:
-			pfx = "fatal: ";
-			break;
-		case LOG_LEVEL_ERROR:
-			pfx = "error: ";
-			break;
-		case LOG_LEVEL_INFO:
-			pfx = "info: ";
-			break;
-		case LOG_LEVEL_DEBUG:
-			pfx = "debug: ";
-			break;
-		case LOG_LEVEL_DEBUG2:
-			pfx = "debug2: ";
-			break;
-		default:
-			pfx = "internal error: ";
-			break;
-	}
+    switch(level){
+        case LOG_LEVEL_FATAL:
+            pfx = "fatal: ";
+            break;
+        case LOG_LEVEL_ERROR:
+            pfx = "error: ";
+            break;
+        case LOG_LEVEL_INFO:
+            pfx = "info: ";
+            break;
+        case LOG_LEVEL_DEBUG:
+            pfx = "debug: ";
+            break;
+        case LOG_LEVEL_DEBUG2:
+            pfx = "debug2: ";
+            break;
+        default:
+            pfx = "internal error: ";
+            break;
+    }
 
-	//buf = tstrfmt(fmt, args);
-	fprintf(stderr, "%s\n", fmt);
+    //buf = tstrfmt(fmt, args);
+    fprintf(stderr, "%s\n", fmt);
 
 }
 /* return a heap allocated string formed from fmt and ap arglist
@@ -119,16 +119,16 @@ log_msg(log_level_t level, const char *fmt, va_list args)
 static char 
 *tstrfmt(const char *fmt, va_list ap)
 {
-	char *buf = NULL;
-	char *p = NULL;
-	size_t len = (size_t)0;
-	char tmp[LINEBUFSIZE];
-	int unprocessed = 0;
-	int long_long = 0;
+    char *buf = NULL;
+    char *p = NULL;
+    size_t len = (size_t)0;
+    char tmp[LINEBUFSIZE];
+    int unprocessed = 0;
+    int long_long = 0;
 
-	while(*fmt != '\0'){
-		if((p = (char *)strchr(fmt, '%')) == NULL){
-			xstrcat(buf, fmt);
-		}
-	}
+    while(*fmt != '\0'){
+        if((p = (char *)strchr(fmt, '%')) == NULL){
+            xstrcat(buf, fmt);
+        }
+    }
 }

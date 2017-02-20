@@ -96,8 +96,9 @@ am__v_AR_1 =
 libcommon_a_AR = $(AR) $(ARFLAGS)
 libcommon_a_LIBADD =
 am_libcommon_a_OBJECTS = libcommon_a-producer.$(OBJEXT) \
-	libcommon_a-job.$(OBJEXT) libcommon_a-log.$(OBJEXT) \
-	libcommon_a-cJSON.$(OBJEXT) libcommon_a-tpython.$(OBJEXT)
+	libcommon_a-task.$(OBJEXT) libcommon_a-log.$(OBJEXT) \
+	libcommon_a-cJSON.$(OBJEXT) libcommon_a-tpython.$(OBJEXT) \
+	libcommon_a-teno_db.$(OBJEXT) libcommon_a-tools.$(OBJEXT)
 libcommon_a_OBJECTS = $(am_libcommon_a_OBJECTS)
 AM_V_P = $(am__v_P_$(V))
 am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))
@@ -251,12 +252,14 @@ top_srcdir = ../..
 AUTOMAKE_OPTIONS = foreign 
 noinst_LIBRARIES = libcommon.a 
 libcommon_a_SOURCES = producer.c producer.h  		\
-		job.h job.c 				\
+		task.h task.c 				\
 		log.h log.c  				\
 		cJSON.h cJSON.c 			\
-		tpython.h tpython.c
+		tpython.h tpython.c         \
+		teno_db.h teno_db.c         \
+		tools.h tools.c
 
-libcommon_a_CFLAGS = -I../../include/librdkafka -I/usr/include/python3.4
+libcommon_a_CFLAGS = -I../../include/librdkafka -I/usr/include/python3.4 -I/usr/include/mysql
 all: all-am
 
 .SUFFIXES:
@@ -307,9 +310,11 @@ distclean-compile:
 	-rm -f *.tab.c
 
 include ./$(DEPDIR)/libcommon_a-cJSON.Po
-include ./$(DEPDIR)/libcommon_a-job.Po
 include ./$(DEPDIR)/libcommon_a-log.Po
 include ./$(DEPDIR)/libcommon_a-producer.Po
+include ./$(DEPDIR)/libcommon_a-task.Po
+include ./$(DEPDIR)/libcommon_a-teno_db.Po
+include ./$(DEPDIR)/libcommon_a-tools.Po
 include ./$(DEPDIR)/libcommon_a-tpython.Po
 
 .c.o:
@@ -340,19 +345,19 @@ libcommon_a-producer.obj: producer.c
 #	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
 #	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-producer.obj `if test -f 'producer.c'; then $(CYGPATH_W) 'producer.c'; else $(CYGPATH_W) '$(srcdir)/producer.c'; fi`
 
-libcommon_a-job.o: job.c
-	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -MT libcommon_a-job.o -MD -MP -MF $(DEPDIR)/libcommon_a-job.Tpo -c -o libcommon_a-job.o `test -f 'job.c' || echo '$(srcdir)/'`job.c
-	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-job.Tpo $(DEPDIR)/libcommon_a-job.Po
-#	$(AM_V_CC)source='job.c' object='libcommon_a-job.o' libtool=no \
+libcommon_a-task.o: task.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -MT libcommon_a-task.o -MD -MP -MF $(DEPDIR)/libcommon_a-task.Tpo -c -o libcommon_a-task.o `test -f 'task.c' || echo '$(srcdir)/'`task.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-task.Tpo $(DEPDIR)/libcommon_a-task.Po
+#	$(AM_V_CC)source='task.c' object='libcommon_a-task.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
-#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-job.o `test -f 'job.c' || echo '$(srcdir)/'`job.c
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-task.o `test -f 'task.c' || echo '$(srcdir)/'`task.c
 
-libcommon_a-job.obj: job.c
-	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -MT libcommon_a-job.obj -MD -MP -MF $(DEPDIR)/libcommon_a-job.Tpo -c -o libcommon_a-job.obj `if test -f 'job.c'; then $(CYGPATH_W) 'job.c'; else $(CYGPATH_W) '$(srcdir)/job.c'; fi`
-	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-job.Tpo $(DEPDIR)/libcommon_a-job.Po
-#	$(AM_V_CC)source='job.c' object='libcommon_a-job.obj' libtool=no \
+libcommon_a-task.obj: task.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -MT libcommon_a-task.obj -MD -MP -MF $(DEPDIR)/libcommon_a-task.Tpo -c -o libcommon_a-task.obj `if test -f 'task.c'; then $(CYGPATH_W) 'task.c'; else $(CYGPATH_W) '$(srcdir)/task.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-task.Tpo $(DEPDIR)/libcommon_a-task.Po
+#	$(AM_V_CC)source='task.c' object='libcommon_a-task.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
-#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-job.obj `if test -f 'job.c'; then $(CYGPATH_W) 'job.c'; else $(CYGPATH_W) '$(srcdir)/job.c'; fi`
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-task.obj `if test -f 'task.c'; then $(CYGPATH_W) 'task.c'; else $(CYGPATH_W) '$(srcdir)/task.c'; fi`
 
 libcommon_a-log.o: log.c
 	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -MT libcommon_a-log.o -MD -MP -MF $(DEPDIR)/libcommon_a-log.Tpo -c -o libcommon_a-log.o `test -f 'log.c' || echo '$(srcdir)/'`log.c
@@ -395,6 +400,34 @@ libcommon_a-tpython.obj: tpython.c
 #	$(AM_V_CC)source='tpython.c' object='libcommon_a-tpython.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
 #	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-tpython.obj `if test -f 'tpython.c'; then $(CYGPATH_W) 'tpython.c'; else $(CYGPATH_W) '$(srcdir)/tpython.c'; fi`
+
+libcommon_a-teno_db.o: teno_db.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -MT libcommon_a-teno_db.o -MD -MP -MF $(DEPDIR)/libcommon_a-teno_db.Tpo -c -o libcommon_a-teno_db.o `test -f 'teno_db.c' || echo '$(srcdir)/'`teno_db.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-teno_db.Tpo $(DEPDIR)/libcommon_a-teno_db.Po
+#	$(AM_V_CC)source='teno_db.c' object='libcommon_a-teno_db.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-teno_db.o `test -f 'teno_db.c' || echo '$(srcdir)/'`teno_db.c
+
+libcommon_a-teno_db.obj: teno_db.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -MT libcommon_a-teno_db.obj -MD -MP -MF $(DEPDIR)/libcommon_a-teno_db.Tpo -c -o libcommon_a-teno_db.obj `if test -f 'teno_db.c'; then $(CYGPATH_W) 'teno_db.c'; else $(CYGPATH_W) '$(srcdir)/teno_db.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-teno_db.Tpo $(DEPDIR)/libcommon_a-teno_db.Po
+#	$(AM_V_CC)source='teno_db.c' object='libcommon_a-teno_db.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-teno_db.obj `if test -f 'teno_db.c'; then $(CYGPATH_W) 'teno_db.c'; else $(CYGPATH_W) '$(srcdir)/teno_db.c'; fi`
+
+libcommon_a-tools.o: tools.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -MT libcommon_a-tools.o -MD -MP -MF $(DEPDIR)/libcommon_a-tools.Tpo -c -o libcommon_a-tools.o `test -f 'tools.c' || echo '$(srcdir)/'`tools.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-tools.Tpo $(DEPDIR)/libcommon_a-tools.Po
+#	$(AM_V_CC)source='tools.c' object='libcommon_a-tools.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-tools.o `test -f 'tools.c' || echo '$(srcdir)/'`tools.c
+
+libcommon_a-tools.obj: tools.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -MT libcommon_a-tools.obj -MD -MP -MF $(DEPDIR)/libcommon_a-tools.Tpo -c -o libcommon_a-tools.obj `if test -f 'tools.c'; then $(CYGPATH_W) 'tools.c'; else $(CYGPATH_W) '$(srcdir)/tools.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-tools.Tpo $(DEPDIR)/libcommon_a-tools.Po
+#	$(AM_V_CC)source='tools.c' object='libcommon_a-tools.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcommon_a_CFLAGS) $(CFLAGS) -c -o libcommon_a-tools.obj `if test -f 'tools.c'; then $(CYGPATH_W) 'tools.c'; else $(CYGPATH_W) '$(srcdir)/tools.c'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique

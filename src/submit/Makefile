@@ -247,8 +247,8 @@ top_builddir = ../..
 top_srcdir = ../..
 AM_LDFLAGS = -L$(top_srcdir)/lib -lrdkafka -lz -lpthread -lrt
 submit_SOURCES = submit.c 
-submit_LDADD = ../common/libcommon.a $(top_srcdir)/lib/librdkafka.so.1 -lm
-submit_CFLAGS = -I$(top_srcdir)/include/librdkafka
+submit_LDADD = ../common/libcommon.a $(top_srcdir)/lib/librdkafka.so.1 -lm -lmysqlclient
+submit_CFLAGS = -I$(top_srcdir)/include/librdkafka -I/usr/include/mysql
 all: all-am
 
 .SUFFIXES:
