@@ -22,6 +22,13 @@ class Slurm(object):
         (result, error) = p.communicate()
         return (result, error)
 
+    def test_run(self):
+        " Run task using slurm "
+        slurm_cmd = [self.cmd_path[self.slurm_exec]]
+        if self.slurm_argc:
+            slurm_cmd.extend(self.slurm_argc)
+        p = Popen(slurm_cmd, stdout=PIPE, stderr=PIPE)
+
     def _parse_config(self):
         " Parse configure file to get the path of slurm cmd "
         conf_section = 'PATH'
