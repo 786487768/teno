@@ -1,15 +1,18 @@
 #!/bin/bash
+
 SLURM_NNODES=1
 HTCTENO_HOME=/home/ll/code/teno/src/htcteno
 HTCTENO_PYTHON_PATH=${HTCTENO_HOME}/bin
 export PATH=$HTCTENO_PYTHON_PATH:$PATH
 export PYTHONPATH=$HTCTENO_HOME
 # run this main shell on the head node .
+## get config args
 REDIS_PATH=$1
 REDIS_HOST=$2
 REDIS_PORT=$3
 CELERY_PATH=$4
-SETTINTS=$5
+PYTHON_PATH=$5
+SETTINTS=$6
 export HTCTENO_HOST=${REDIS_HOST}
 export HTCTENO_PORT=${REDIS_PORT}
 # run redis-server

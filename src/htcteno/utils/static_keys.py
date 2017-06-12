@@ -1,4 +1,7 @@
 class StaticKeys():
+    # python configure
+    PYTHON_SECTION = 'PYTHON'
+    PYTHON_PATH = 'python_path'
     # celery configure
     CELERY_SECTION = 'CELERY'
     CELERY_PATH = 'celery_path'

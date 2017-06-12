@@ -9,6 +9,10 @@ def parse_all_configure(configure_file=None):
             raise IOError
         config = configparser.ConfigParser()
         config.read(configure_file)
+        if StaticKeys.PYTHON_SECTION in config.sections():
+            python_info = config[StaticKeys.PYTHON_SECTION]
+            configure_info[StaticKeys.PYTHON_PATH] = python_info.get( \
+                                StaticKeys.PYTHON_PATH)
         if StaticKeys.CELERY_SECTION in config.sections():
             celery_info = config[StaticKeys.CELERY_SECTION]
             configure_info[StaticKeys.CELERY_PATH] = celery_info.get( \

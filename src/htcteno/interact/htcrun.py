@@ -19,7 +19,7 @@ def _usage():
             -C      configure file
             -I      input dir
             -O      output dir
-            -h      help''')
+            -h      help''') 
     exit(1)
 if __name__ == '__main__':
     try:
@@ -66,13 +66,14 @@ if __name__ == '__main__':
         if not isdir(output_dir):
             os.mkdir(output_dir)
 
-    # get configure info
+    # get configure info, for example redis、celery、python
     configure_info = parse_all_configure()
     redis_host = configure_info.get(StaticKeys.REDIS_HOST)
     redis_port = configure_info.get(StaticKeys.REDIS_PORT)
     redis_path = configure_info.get(StaticKeys.REDIS_PATH)
+    python_path = configure_info.get(StaticKeys.PYTHON_PATH)
     celery_path = configure_info.get(StaticKeys.CELERY_PATH)
-    # create a new task record 
+    # create a new task record
     user = os.getuid()
     input_files = [i for i in os.listdir(input_dir) if os.path.isfile(join(input_dir, i))]
     total_jobs = len(input_files)
@@ -91,7 +92,7 @@ if __name__ == '__main__':
     setting['output'] = output_dir
     settings = json.dumps(setting).encode('utf-8')
     slurm_argvs = ['sbatch', 'run.sh', redis_path, redis_host, \
-            redis_port, celery_path, settings]
+            redis_port, celery_path, python_path, settings]
     try:
         p = Popen(slurm_argvs, stdout=PIPE, stderr=PIPE)
         (output, error) = p.communicate()
