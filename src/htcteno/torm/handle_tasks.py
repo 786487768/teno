@@ -2,7 +2,7 @@ import sys
 import datetime
 sys.path.append('..')
 sys.path.append('../..')
-from htcteno import session
+# from htcteno import session
 from torm.entity import Tasks
 
 def insert_task(user, task_type, state, redis_host, \

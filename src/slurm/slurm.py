@@ -13,21 +13,14 @@ class Slurm(object):
         self.cmd_path = {}
         self._parse_config()
 
-    def run_task(self):
-        " Run task using slurm "
+    def run_job(self):
+        " Run job using slurm "
         slurm_cmd = [self.cmd_path[self.slurm_exec]]
         if self.slurm_argc:
             slurm_cmd.extend(self.slurm_argc)
         p = Popen(slurm_cmd, stdout=PIPE, stderr=PIPE)
         (result, error) = p.communicate()
         return (result, error)
-
-    def test_run(self):
-        " Run task using slurm "
-        slurm_cmd = [self.cmd_path[self.slurm_exec]]
-        if self.slurm_argc:
-            slurm_cmd.extend(self.slurm_argc)
-        p = Popen(slurm_cmd, stdout=PIPE, stderr=PIPE)
 
     def _parse_config(self):
         " Parse configure file to get the path of slurm cmd "
@@ -95,6 +88,6 @@ def run(task_exec, slurm_argc):
 
 if __name__ == '__main__':
     slurm_task = Slurm('srun', ['hostname'])
-    result, error = slurm_task.run_task()
+    result, error = slurm_task.run_job()
     return_code = 0 if result else 1
     print (return_code, result.decode('UTF-8'), error.decode('UTF-8'))

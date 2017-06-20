@@ -31,12 +31,12 @@ class StaticKeys():
     DEFAULT_MYSQL_PORT = '3306'
     DEFAULT_MYSQL_DATABASE = 'tasks_info'
 
-class TASK_TYPE():
-    NORMAL_TASK = 0
-    HTC_TASK = 1
-    OTHER_TASK = 2
-    
-class TASK_STATE():
+class JOB_TYPE():
+    NORMAL_JOB = 0
+    HTC_JOB = 1
+    OTHER_JOB = 2
+
+class JOB_STATE():
     SUBMITED = 0
     WAITTINT = 1
     RUNNING = 2
@@ -46,14 +46,14 @@ class TASK_STATE():
     CANCEL = 6
     SUBMIT_ERROR = -1
 
-    STATE_DESCRIPTION = {SUBMITED: "Your Job Has Been Submited", 
-                         WAITTINT: "Your Job Is Waitting In Queue", 
-                         RUNNING: "Your Job Is Running", 
-                         SUCCESS: "Your Job Has Been Finished Successfully",
-                         FAIL: "Your Job Has Been Finished Fail",
-                         PEND: "Your Job is Pendding",
-                         CANCEL: "Your Job Has Been Canceled",
-                         SUBMIT_ERROR: "Your Job Occured Submit Error"}
+    STATE_DESCRIPTION = {SUBMITED: "This Job Has Been Submited", 
+                         WAITTINT: "This Job Is Waitting In Queue", 
+                         RUNNING: "This Job Is Running", 
+                         SUCCESS: "This Job Has Been Finished Successfully",
+                         FAIL: "This Job Has Been Finished Fail",
+                         PEND: "This Job is Pendding",
+                         CANCEL: "This Job Has Been Canceled",
+                         SUBMIT_ERROR: "This Job Submits Fail"}
 
     STATE_DESCRIPTION2 = {SUBMITED: "Submited", 
                          WAITTINT: "Waitting", 
@@ -62,4 +62,35 @@ class TASK_STATE():
                          FAIL: "Fail",
                          PEND: "Pendding",
                          CANCEL: "Cancel",
-                         SUBMIT_ERROR: "Submit Error"}
+                         SUBMIT_ERROR: "Submit Fail"}
+
+class TASK_STATE():
+    SUBMITED = 0
+    WAITTINT = 1
+    RUNNING = 2
+    SUCCESS = 3
+    FAIL = 4
+    PEND = 5
+    CANCEL = 6
+    RETRY = 7
+    SUBMIT_ERROR = -1
+
+    STATE_DESCRIPTION = {SUBMITED: "This Task Has Been Submited", 
+                         WAITTINT: "This Task Is Waitting In Queue", 
+                         RUNNING: "This Task Is Running", 
+                         SUCCESS: "This Task Has Been Finished Successfully",
+                         FAIL: "This Task Has Been Finished Fail",
+                         PEND: "This Task is Pendding",
+                         CANCEL: "This Task Has Been Canceled",
+                         RETRY: "This Task Will Be Retrying",
+                         SUBMIT_ERROR: "This Task Submits Fail"}
+
+    STATE_DESCRIPTION2 = {SUBMITED: "Submited", 
+                         WAITTINT: "Waitting", 
+                         RUNNING: "Running", 
+                         SUCCESS: "Success",
+                         FAIL: "Fail",
+                         PEND: "Pendding",
+                         CANCEL: "Cancel",
+                         RETRY: "Retrying",
+                         SUBMIT_ERROR: "Submit Fail"}

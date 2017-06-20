@@ -1,4 +1,5 @@
-from sqlalchemy.orm import sessionmaker
+# 建立mysql连接，使用sqlalchemy
+'''from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from utils.static_keys import StaticKeys
 from utils.parse_configure import parse_mysql_configure
@@ -13,4 +14,4 @@ database = mysql_conf[StaticKeys.MYSQL_DATABASE]
 connector = "mysql+mysqlconnector://%s:%s@%s:%s/%s" %(user, password, host, port, database)
 engine = create_engine(connector)
 DBsession = sessionmaker(bind = engine)
-session = DBsession()
+session = DBsession()'''

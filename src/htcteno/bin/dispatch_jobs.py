@@ -18,15 +18,21 @@ class Dispatcher():
         exec_program = setting.get('exec')
         input_dir = setting.get('input')
         output_dir = setting.get('output')
+        task_nums = setting.get('task_nums')
         # get input file and output file
-        input_files = [i for i in os.listdir(input_dir) if isfile(join(input_dir, i))]
-        output_files_path = [join(output_dir, o) for o in input_files]
-        input_files_path = [join(input_dir, i) for i in input_files]
+        if input_dir != None:  
+            input_files = [i for i in os.listdir(input_dir) if isfile(join(input_dir, i))]
+            output_files_path = [join(output_dir, o) for o in input_files]
+            input_files_path = [join(input_dir, i) for i in input_files]
 
-        for index in range(0, len(input_files_path)):
-            input_file_path = input_files_path[index]
-            output_file_path = output_files_path[index]
-            cmd = "%s %s >%s" % (exec_program, input_file_path, output_file_path)
+        for index in range(0, task_nums):
+            if input_dir != None:
+                input_file_path = input_files_path[index]
+                output_file_path = output_files_path[index]
+                cmd = "%s %s >%s" % (exec_program, input_file_path, output_file_path)
+            else:
+                output_file_path = join(output_dir, index)
+                cmd = "%s >%s" % (exec_program, output_file_path)
             exec_program_name = exec_program.split(' ')[0]
             tname = "%s_%s" % (exec_program_name, index)
             print (cmd)
