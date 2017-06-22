@@ -7,6 +7,7 @@ import datetime
 
 Base = declarative_base()
 
+
 class Tasks(Base):
     __tablename__ = 'tasks'
     __table_args__ = {
@@ -26,6 +27,7 @@ class Tasks(Base):
     total_jobs = Column(Integer)
     command = Column(String)
 
+
 class Jobs(Base):
     __tablename__ = 'jobs'
     __table_args__ = {
@@ -42,15 +44,16 @@ class Jobs(Base):
 
 
 if __name__ == '__main__':
-    engine = create_engine("mysql+mysqlconnector://ll:816543@localhost:3306/tasks_info")
-    DBsession = sessionmaker(bind = engine)
+    engine = create_engine(
+        "mysql+mysqlconnector://ll:816543@localhost:3306/tasks_info")
+    DBsession = sessionmaker(bind=engine)
     start_time = datetime.datetime.now()
-    new_task = Tasks(user=1000, slurm_id=7, task_type=0, state=0, \
-        start_time=start_time, redis_host='localhost')
-    new_job = Jobs(task_id=1, celery_id="45154321-SD445FJL", \
-        state=0, end_time=start_time, command="/bin/hostname")
+    new_task = Tasks(user=1000, slurm_id=7, task_type=0, state=0,
+                     start_time=start_time, redis_host='localhost')
+    new_job = Jobs(task_id=1, celery_id="45154321-SD445FJL",
+                   state=0, end_time=start_time, command="/bin/hostname")
     session = DBsession()
     result = session.query(Tasks.id).filter_by(user=10000).one()
-    print (result[0])
+    print(result[0])
     session.commit()
     session.close()

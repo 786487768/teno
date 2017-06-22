@@ -7,7 +7,7 @@ REDIS_PORT=$3
 CELERY_PATH=$4
 PYTHON_PATH=$5
 HTCTENO_HOME=$6
-SETTINTS=$7
+SETTINGS=$7
 
 HTCTENO_PYTHON_PATH=${HTCTENO_HOME}/bin
 export PATH=$PYTHON_PATH:$HTCTENO_PYTHON_PATH:$PATH
@@ -16,17 +16,17 @@ export PYTHONPATH=$HTCTENO_HOME:$PYTHONPATH
 export HTCTENO_HOST=${REDIS_HOST}
 export HTCTENO_PORT=${REDIS_PORT}
 # run redis-server
-nohup ${REDIS_PATH} &> log.redis &
-
+nohup ${REDIS_PATH} &> log.redis
 # set settings to redis
-set_configure.py ${REDIS_HOST} ${REDIS_PORT} ${SETTINTS} &> log.setting &
+echo ${SETTINGS}
+set_configure.py ${REDIS_HOST} ${REDIS_PORT} ${SETTINGS} &> log.setting
 # run worker
 echo $SLURM_NNODES
 srun -N ${SLURM_NNODES} -n ${SLURM_NNODES} ${CELERY_PATH} -A htc_celery worker -l info &> log.worker.${HOSTNAME} &
 # dispatch jobs
-dispatch_jobs.py ${REDIS_HOST} ${REDIS_PORT} &> log.run &
+dispatch_jobs.py ${REDIS_HOST} ${REDIS_PORT} &> log.run
 # monitor the status of the task and clean server when task is finished
-monitor.py ${REDIS_HOST} ${REDIS_PORT}
+monitor.py ${REDIS_HOST} ${REDIS_PORT} &> log.monitor
 echo "task has been finished"
-sleep 10
+
 
