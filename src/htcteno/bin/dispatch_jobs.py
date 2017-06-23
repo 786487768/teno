@@ -3,8 +3,8 @@ import os
 import sys
 import json
 import redis
+import threading
 from os.path import isfile, join
-from multiprocessing import Pool
 sys.path.append('..')
 
 from htc_celery.tasks import run_command
@@ -65,12 +65,11 @@ if __name__ == '__main__':
     dispatcher = Dispatcher(redis_host, redis_port)
     dispatcher.set_info()
     task_nums_per = dispatcher.task_nums // 5
-    p = Pool(5)
     for i in range(5):
         begin_task = i * task_nums_per
         end_task = begin_task + task_nums_per
         print (begin_task, end_task)
-        p.apply_async(dispatch_tasks, args=(begin_task, end_task, ))
-    p.close()
-    p.join()
+        t = threading.Thread(target=dispatch_tasks, args=(begin_task, end_task, ))
+        t.start()
+        t.join()
     print("done dispatch_jos.py")
