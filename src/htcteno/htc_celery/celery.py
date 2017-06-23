@@ -6,15 +6,16 @@ import redis
 from celery import Celery, Task
 
 master_port = os.getenv("HTCTENO_PORT", 6379)
-master_host = os.getenv("HTCTENO_HOST", None)
+master_host = os.getenv("HTCTENO_HOST", 'localhost')
 if not master_host:
     raise Exception("Error: No HTCTENO_HOST SET")
 
-masterip = "%s:%s" % (master_host, master_port)
+# masterip = "redis://%s:%s" % (master_host, master_port)
+masterip = "pyamqp://ll:816543@%s:5672" % (master_host)
 
 app = Celery('htc_celery',
-             broker="redis://" + masterip,
-             backend="redis://" + masterip,
+              broker= masterip,
+             # backend="redis://" + masterip,
              include=['htc_celery.tasks'])
 
 app.conf.update(

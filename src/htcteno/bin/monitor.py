@@ -23,20 +23,9 @@ class Monitor():
     def wait(self):
         while 1:
             time.sleep(10)
-            sln = self.redis_instance.llen('success_list')
-            fln = self.redis_instance.llen('fail_list')
-            aln = self.redis_instance.hlen('thht_id_name')
-            if sln + fln == aln:
-                fail_list = self.redis_instance.lrange('fail_list', 0, fln)
-                for fail_job in fail_list:
-                    fail_job = json.loads(fail_job.decode('UTF-8'))
-                    task_id = fail_job.get('task_id')
-                    task_info = json.loads(self.redis_instance.hget(
-                        'thht_id_info', task_id).decode('UTF-8'))
-                    print("Total Jobs: %s Success Jobs: %s Fail Jobs: %s"
-                          % (aln, sln, fln))
-                    print("fail job:%s %s %s" % (task_id, task_info.get(
-                        'task_cmd'), fail_job.get('exc')))
+            cln = self.redis_instance.llen('compelete_list')
+            aln = int(self.redis_instance.get('task_nums'))
+            if cln == aln:
                 self.is_finished = True
                 self._clean()
                 break

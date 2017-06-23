@@ -33,17 +33,6 @@ def xsum(numbers):
 
 @app.task(base=HtcTask, bind=True, autoretry_for=(Exception,), track_started=True, max_retries=3, default_retry_delay=1)
 def run_command(self, command, env=None, timeout=600):
-    # env_backup = os.environ.copy()
-    # if settings["job"]["env"] == "bash" :
-    #     for i in os.environ.keys() :
-    #         os.unsetenv( i )
-    #     args = [ "bash" , "-c" , "-l" , command ]
-    # else :
-    #     env_path = os.getenv("OLD_PATH")
-    #     env_ld = os.getenv("OLD_LD_LIBRARY_PATH")
-    #     os.putenv("PATH" , env_path)
-    #     os.putenv("LD_LIBRARY_PATH" , env_ld)
-    #
     args = ["bash", "-c", "-l", command]
     try:
         p = Popen(args, stdout=PIPE, stderr=PIPE)
@@ -59,12 +48,5 @@ def run_command(self, command, env=None, timeout=600):
         signal.alarm(0)  # reset the alarm
     except Exception as exc:
         raise exc
-    if retcode != 0:  # TO-DO need settings.FLAGS.RETRY.RETCODE
-        raise ExceptionReturn('Error:%s;%s' % (
-            str(retcode), error.decode('utf-8')))
-        # try :
-        #    pass
-        #    raise ExceptionReturn('Error:%s;%s'%(str(retcode) , error.decode('utf-8')))
-        # except Exception as ex :
-        #   raise self.retry( exc=ex   )
+    run_command.get_redis_instance.lpush('compelete_list', 1)
     return [retcode]
